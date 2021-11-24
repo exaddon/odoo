@@ -1,4 +1,4 @@
-# odoo
+## odoo
 
 ## Odoo Theme Documentation
 
