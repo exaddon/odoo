@@ -4,8 +4,8 @@
     'category': 'Theme/Ecommers',
     'summary': 'A module that manages all the process of futura font',
     'version': '1.0',
-    'author': 'Techultra Solution',
-    'website': 'www.techultrasolutions.com',
+    'author': 'MP Technolabs',
+    'website': 'www.mptechnolabs.com',
 
     'depends':['base','website'],
     'data':[
