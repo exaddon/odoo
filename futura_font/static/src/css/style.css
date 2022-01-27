@@ -169,3 +169,11 @@
     font-display: swap;
 }
 
+ @font-face {
+    font-family: 'Futura LT Pro Book';
+    src: url('/futura_font/static/src/font/futura/FuturaLTPro-Bold.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTPro-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
