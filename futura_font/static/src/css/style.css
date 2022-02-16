@@ -177,3 +177,112 @@
     font-style: normal;
     font-display: swap;
 }
+
+
+@font-face {
+    font-family: 'FuturaLTW01-LightOblique';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-LightOblique.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-LightOblique.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FuturaLTW01-MediumOblique';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-MediumOblique.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-MediumOblique.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FuturaLTW01-BoldOblique';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-BoldOblique.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-BoldOblique.woff') format('woff');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FuturaLTW01';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-Medium.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FuturaLTW01';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-Bold.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FuturaLTW01-HeavyOblique';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-HeavyOblique.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-HeavyOblique.woff') format('woff');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FuturaLTW01-Book';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-Book.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-Book.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FuturaLTW01';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-ExtraBold.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-ExtraBold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FuturaLTW01-ExtraBoldObl';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-ExtraBoldObl.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-ExtraBoldObl.woff') format('woff');
+    font-weight: 800;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FuturaLTW01-BookOblique';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-BookOblique.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-BookOblique.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FuturaLTW01';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-Light.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FuturaLTW01';
+    src: url('/futura_font/static/src/font/futura/FuturaLTW01-Heavy.woff2') format('woff2'),
+        url('/futura_font/static/src/font/futura/FuturaLTW01-Heavy.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
