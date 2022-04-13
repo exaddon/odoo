@@ -131,7 +131,8 @@ $o-gray-color-palettes: ();
     $o-gray-color-palettes,
     (
       "black": #000000,
-      "900": lighten(#000, 40%),
+//       "900": lighten(#000, 40%),
+      "900": #0c2340,
       "600": lighten(#000, 70%),
       "200": lighten(#000, 80%),
       "white": #ffffff
@@ -140,6 +141,7 @@ $o-gray-color-palettes: ();
 }
 
 // Colors
+//1  'o-color-5': #bdbdc6,
 $o-color-palettes: (
 
     (
@@ -147,7 +149,7 @@ $o-color-palettes: (
         'o-color-2': #0c2340,
         'o-color-3': #a38e3d,
         'o-color-4': #ffffff,
-        'o-color-5': #bdbdc6,
+        'o-color-5': #c1c1c9,
 
         'menu': 1,
         'footer': 5,
@@ -207,7 +209,7 @@ $o-color-palettes: (
         'menu': 5,
         'footer': 5,
         'copyright': 5,
-    ),wor
+    ),
 );
 
 // Colors
@@ -396,6 +398,10 @@ $o-color-palettes: (
 // );
 
 $o-theme-font-configs: (
+    'Futura': (
+        'family': ("Futura", sans-serif),
+        'url': null,
+    ),
     'PT Sans': (
         'family': ('PT Sans', sans-serif),
         'url': 'PT+Sans:400,400i,700,700i',
@@ -408,10 +414,10 @@ $o-theme-font-configs: (
         'family': ("Bitter", serif),
         'url': 'Bitter:400,400i,700',
     ),
-//     'Droid Serif': (
-//         'family': ("Droid Serif", serif),
-//         'url': null,
-//     ),
+    'Droid Serif': (
+        'family': ("Droid Serif", serif),
+        'url': null,
+    ),
     'Dosis': (
         'family': ("Dosis", sans-serif),
         'url': 'Dosis:400,700',
@@ -420,10 +426,10 @@ $o-theme-font-configs: (
         'family': ("Open Sans", sans-serif),
         'url': 'Open+Sans:400,400i,700,700i',
     ),
-//     'Helvetica': (
-//         'family': ("Helvetica", "Arial", sans-serif),
-//         'url': null,
-//     ),
+    'Helvetica': (
+        'family': ("Helvetica", "Arial", sans-serif),
+        'url': null,
+    ),
     'Lato': (
         'family': ("Lato", sans-serif),
         'url': 'Lato:400,400i,700,700i',
@@ -468,8 +474,4 @@ $o-theme-font-configs: (
         'family': ("Vollkorn", serif),
         'url': 'Vollkorn:400,400i,700,700i',
     ),
-//     'Futura': (
-//         'family': ("Futura", sans-serif)
-//         'url': null,
-//     ),
 );
