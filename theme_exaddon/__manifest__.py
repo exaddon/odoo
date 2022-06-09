@@ -14,6 +14,7 @@
         'views/image_library.xml',
         'views/snippets_options.xml',
         'views/snippets.xml',
+        'views/website_blog_template.xml',
     ],
     'images': [
         'static/description/Exaddon_description.jpg',

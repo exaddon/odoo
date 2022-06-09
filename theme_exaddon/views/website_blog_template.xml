@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="opt_blog_post_regular_cover_theme_exaddon" name="'Regular' Cover" inherit_id="website_blog.opt_blog_post_regular_cover">
+        <xpath expr="//div[@t-field='blog_post.name']" position="replace">
+            <h1 t-field="blog_post.name" id="o_wblog_post_name" data-oe-expression="blog_post.name" t-att-data-blog-id="blog_post.id" placeholder="Title"/>
+        </xpath>
+    </template>
+</odoo>
