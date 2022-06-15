@@ -194,3 +194,21 @@ h1 {
 // .dropdown-item.active, .dropdown-item:active {
 //   color: #fff !important;
 // }
+.website_blog .o_wblog_regular_cover_container .o_wblog_post_title {
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+}
+.website_blog .o_wblog_regular_cover_container > .pt-4 {
+    padding-top: 0 !important;
+}
+.website_blog .o_wblog_regular_cover_container > .pt-4 > .text-muted.mb-2{
+    text-align: end;
+}
+.website_blog > #blog_content{
+    margin-top: 0 !important;
+}
+blockquote{
+    border-left: 0 !important;
+    font-style: inherit !important;
+}

@@ -3,7 +3,15 @@
 <odoo>
     <template id="opt_blog_post_regular_cover_theme_exaddon" name="'Regular' Cover" inherit_id="website_blog.opt_blog_post_regular_cover">
         <xpath expr="//div[@t-field='blog_post.name']" position="replace">
-            <h1 t-field="blog_post.name" id="o_wblog_post_name" data-oe-expression="blog_post.name" t-att-data-blog-id="blog_post.id" placeholder="Title"/>
+            <h1 t-field="blog_post.name" id="o_wblog_post_name1" data-oe-expression="blog_post.name" t-att-data-blog-id="blog_post.id" placeholder="Title"/>
+        </xpath>
+
+        <xpath expr="//div[@t-field='blog_post.subtitle']" position="replace">
+            <h2 t-field="blog_post.subtitle" id="o_wblog_post_subtitle1"  placeholder="Subtitle"/>
+        </xpath>
+
+        <xpath expr="//div[hasclass('container')]" position="attributes">
+            <attribute name="class"> </attribute>
         </xpath>
     </template>
 </odoo>
