@@ -4,7 +4,7 @@
     'category': 'Theme/Services',
     'summary': 'Corporate, Business, Tech, Services',
     'sequence': 120,
-    'version': '1.1',
+    'version': '1.2',
     'depends': ['theme_common', 'website_animate'],
     'data': [
         'views/assets.xml',
@@ -14,6 +14,7 @@
         'views/image_library.xml',
         'views/snippets_options.xml',
         'views/snippets.xml',
+        'views/website_blog_template.xml',
     ],
     'images': [
         'static/description/Exaddon_description.jpg',
