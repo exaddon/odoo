@@ -1,127 +1,87 @@
-/* Copyright 2016 ACSONE SA/NV (<http://acsone.eu>)
- * License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). */
-odoo.define('date_range.search_filters', function (require) {
+/* Copyright 2016 ACSONE SA/NV (<https://acsone.eu>)
+ * Copyright 2021 Studio73 - Pablo Fuentes (https://www.studio73.es)
+ * License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). */
+
+odoo.define("date_range.CustomFilterItem", function (require) {
     "use strict";
 
-    var core = require('web.core');
-    var data = require('web.data');
-    var filters = require('web.search_filters');
-    var rpc = require('web.rpc');
-    var framework = require('web.framework');
+    const {_lt} = require("web.core");
+    const session = require("web.session");
+    const {FIELD_OPERATORS, FIELD_TYPES} = require("web.searchUtils");
+    const CustomFilterItem = require("web.CustomFilterItem");
 
-    filters.ExtendedSearchProposition.include({
-        select_field: function (field) {
-            this._super.apply(this, arguments);
-            this.is_date_range_selected = false;
-            this.is_date = field.type === 'date' || field.type === 'datetime';
-            this.$value = this.$el.find('.searchview_extended_prop_value, .o_searchview_extended_prop_value');
-            if (this.is_date) {
-                var ds = new data.DataSetSearch(this, 'date.range.type', this.context, [[1, '=', 1]]);
-                ds.read_slice(['name'], {}).done(this.proxy('add_date_range_types_operator'));
-            }
-        },
+    CustomFilterItem.patch(
+        "date_range.CustomFilterItem",
+        (T) =>
+            class extends T {
+                constructor() {
+                    super(...arguments);
+                    this._computeDateRangeOperators();
+                }
 
-        add_date_range_types_operator: function (date_range_types) {
-            var self = this;
-            _.each(date_range_types, function (drt) {
-                $('<option>', {value: 'drt_' + drt.id})
-                    .text(_('in ') + drt.name)
-                    .appendTo(self.$el.find('.searchview_extended_prop_op, .o_searchview_extended_prop_op'));
-            });
-        },
-
-        operator_changed: function (e) {
-            var val = $(e.target).val();
-            this.is_date_range_selected = val.startsWith('drt_');
-            if (this.is_date_range_selected) {
-                var type_id = val.replace('drt_', '');
-                this.date_range_type_operator_selected(type_id);
-                return;
-            }
-            this._super.apply(this, arguments);
-        },
-
-        date_range_type_operator_selected: function (type_id) {
-            this.$value.empty().show();
-            var ds = new data.DataSetSearch(this, 'date.range', this.context, [['type_id', '=', parseInt(type_id, 10)]]);
-            ds.read_slice(['name', 'date_start', 'date_end'], {}).done(this.proxy('on_range_type_selected'));
-
-        },
-
-        on_range_type_selected: function (date_range_values) {
-            this.value = new filters.ExtendedSearchProposition.DateRange(this, this.value.field, date_range_values);
-            this.value.appendTo(this.$value);
-            if (!this.$el.hasClass('o_filter_condition')) {
-                this.$value.find('.date-range-select').addClass('form-control');
-            }
-            this.value.on_range_selected();
-        },
-
-        get_filter: function () {
-            var res = this._super.apply(this, arguments);
-            if (this.is_date_range_selected) {
-            // In case of date.range, the domain is provided by the server and we don't
-            // Want to put nest the returned value into an array.
-                res.attrs.domain = this.value.domain;
-            }
-            return res;
-        },
-
-    });
-
-    /**
-Since Odoo 11, The Field class used as base class for all specialized filter
-widgets is no more exposed by 'web.search_filters'. To create our own class we
-extend the more simple class available into the search_filters_registry as base
-class
-*/
-
-    filters.ExtendedSearchProposition.DateRange = core.search_filters_registry.get('id').extend({
-        template: 'SearchView.extended_search.dateRange.selection',
-        events: {
-            'change': 'on_range_selected',
-        },
-
-        init: function (parent, field, date_range_values) {
-            this._super(parent, field);
-            this.date_range_values = date_range_values;
-        },
-
-        toString: function () {
-            var select = this.$el[0];
-            var option = select.options[select.selectedIndex];
-            return option.label || option.text;
-        },
-
-        get_value: function () {
-            return parseInt(this.$el.val(), 10);
-        },
-
-        on_range_selected: function (e) {
-            var self = this;
-            self.domain = '';
-            var value = this.get_value();
-            if (value) {
-                framework.blockUI();
-                return rpc.query({
-                    args: [this.get_value()],
-                    kwargs: {
-                        field_name: this.field.name,
-                    },
-                    model: 'date.range',
-                    method: 'get_domain',
-                })
-                    .then(function (domain) {
-                        framework.unblockUI();
-                        self.domain = domain;
+                async _computeDateRangeOperators() {
+                    this.OPERATORS = Object.assign({}, FIELD_OPERATORS);
+                    this.OPERATORS.date = [...FIELD_OPERATORS.date];
+                    this.OPERATORS.datetime = [...FIELD_OPERATORS.datetime];
+                    this.date_ranges = {};
+                    const result = await this.rpc({
+                        model: "date.range",
+                        method: "search_read",
+                        fields: ["name", "type_id", "date_start", "date_end"],
+                        context: session.user_context,
                     });
+                    result.forEach((range) => {
+                        const range_type = range.type_id[0];
+                        if (this.date_ranges[range_type] === undefined) {
+                            const r = {
+                                symbol: "between",
+                                description: `${_lt("in")} ${range.type_id[1]}`,
+                                date_range: true,
+                                date_range_type: range_type,
+                            };
+                            this.OPERATORS.date.push(r);
+                            this.OPERATORS.datetime.push(r);
+                            this.date_ranges[range_type] = [];
+                        }
+                        this.date_ranges[range_type].push(range);
+                    });
+                }
+
+                _setDefaultValue(condition) {
+                    const type = this.fields[condition.field].type;
+                    const operator = this.OPERATORS[FIELD_TYPES[type]][
+                        condition.operator
+                    ];
+                    if (operator.date_range) {
+                        const default_range = this.date_ranges[
+                            operator.date_range_type
+                        ][0];
+                        const d_start = moment(`${default_range.date_start} 00:00:00Z`);
+                        const d_end = moment(`${default_range.date_end} 23:59:59Z`);
+                        condition.value = [d_start, d_end];
+                    } else {
+                        super._setDefaultValue(...arguments);
+                    }
+                }
+
+                _onValueInput(condition, ev) {
+                    const type = this.fields[condition.field].type;
+                    const operator = this.OPERATORS[FIELD_TYPES[type]][
+                        condition.operator
+                    ];
+                    if (operator.date_range) {
+                        const eid = parseInt(ev.target.value);
+                        const ranges = this.date_ranges[operator.date_range_type];
+                        const range = ranges.find((x) => x.id == eid);
+                        const d_start = moment(`${range.date_start} 00:00:00Z`);
+                        const d_end = moment(`${range.date_end} 23:59:59Z`);
+                        condition.value = [d_start, d_end];
+                    } else {
+                        super._onValueInput(...arguments);
+                    }
+                }
             }
-        },
+    );
 
-        get_domain: function (field, operator) {
-            return this.domain;
-        },
-
-    });
-
+    return CustomFilterItem;
 });

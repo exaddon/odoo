@@ -4,9 +4,8 @@ from odoo import api, models
 
 
 class AccountMoveLine(models.Model):
-    _inherit = 'account.move.line'
+    _inherit = "account.move.line"
 
-    @api.model_cr
     def init(self):
         """
             The join between accounts_partners subquery and account_move_line
@@ -21,10 +20,21 @@ class AccountMoveLine(models.Model):
             By adding the following index, performances are strongly increased.
         :return:
         """
-        self._cr.execute('SELECT indexname FROM pg_indexes WHERE indexname = '
-                         '%s',
-                         ('account_move_line_account_id_partner_id_index',))
+        self._cr.execute(
+            "SELECT indexname FROM pg_indexes WHERE indexname = " "%s",
+            ("account_move_line_account_id_partner_id_index",),
+        )
         if not self._cr.fetchone():
-            self._cr.execute("""
+            self._cr.execute(
+                """
             CREATE INDEX account_move_line_account_id_partner_id_index
-            ON account_move_line (account_id, partner_id)""")
+            ON account_move_line (account_id, partner_id)"""
+            )
+
+    @api.model
+    def search_count(self, args):
+        # In Big DataBase every time you change the domain widget this method
+        # takes a lot of time. This improves performance
+        if self.env.context.get("skip_search_count"):
+            return 0
+        return super(AccountMoveLine, self).search_count(args)
