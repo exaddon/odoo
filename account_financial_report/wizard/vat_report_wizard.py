@@ -8,14 +8,13 @@ from odoo.exceptions import ValidationError
 class VATReportWizard(models.TransientModel):
     _name = "vat.report.wizard"
     _description = "VAT Report Wizard"
-    _inherit = "account.financial.report.abstract.wizard"
+    _inherit = "account_financial_report_abstract_wizard"
 
     date_range_id = fields.Many2one(comodel_name="date.range", string="Date range")
     date_from = fields.Date("Start Date", required=True)
     date_to = fields.Date("End Date", required=True)
     based_on = fields.Selection(
         [("taxtags", "Tax Tags"), ("taxgroups", "Tax Groups")],
-        string="Based On",
         required=True,
         default="taxtags",
     )

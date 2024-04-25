@@ -4,7 +4,7 @@
 from odoo import api, models
 
 
-class AccountFinancialAbstractReport(models.AbstractModel):
+class AgedPartnerBalanceReport(models.AbstractModel):
     _name = "report.account_financial_report.abstract_report"
     _description = "Abstract Report"
     COMMON_ML_FIELDS = [
@@ -134,7 +134,7 @@ class AccountFinancialAbstractReport(models.AbstractModel):
                         "name": account.name,
                         "hide_account": False,
                         "group_id": account.group_id.id,
-                        "currency_id": account.currency_id or False,
+                        "currency_id": account.currency_id.id,
                         "currency_name": account.currency_id.name,
                         "centralized": account.centralized,
                     }

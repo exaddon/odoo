@@ -21,12 +21,12 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: theme_exaddon
-#: model_terms:theme.ir.ui.view,arch:theme_exaddon.exaddon_snippet_options
+#: model_terms:theme.ir.ui.view,arch:theme_exaddon.clean_snippet_options
 msgid "<i class=\"fa fa-barcode\"/>Gradients"
 msgstr ""
 
 #. module: theme_exaddon
-#: model_terms:theme.ir.ui.view,arch:theme_exaddon.exaddon_snippet_options
+#: model_terms:theme.ir.ui.view,arch:theme_exaddon.clean_snippet_options
 msgid "None"
 msgstr "无"
 

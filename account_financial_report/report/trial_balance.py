@@ -4,7 +4,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 
-from odoo import api, models
+from odoo import _, api, models
 from odoo.tools.float_utils import float_is_zero
 
 
@@ -25,7 +25,7 @@ class TrialBalanceReport(models.AbstractModel):
     ):
         accounts_domain = [
             ("company_id", "=", company_id),
-            ("user_type_id.include_initial_balance", "=", True),
+            ("include_initial_balance", "=", True),
         ]
         if account_ids:
             accounts_domain += [("id", "in", account_ids)]
@@ -43,7 +43,13 @@ class TrialBalanceReport(models.AbstractModel):
         else:
             domain += [("move_id.state", "in", ["posted", "draft"])]
         if show_partner_details:
-            domain += [("account_id.internal_type", "in", ["receivable", "payable"])]
+            domain += [
+                (
+                    "account_id.account_type",
+                    "in",
+                    ["asset_receivable", "liability_payable"],
+                )
+            ]
         return domain
 
     def _get_initial_balances_pl_ml_domain(
@@ -59,7 +65,7 @@ class TrialBalanceReport(models.AbstractModel):
     ):
         accounts_domain = [
             ("company_id", "=", company_id),
-            ("user_type_id.include_initial_balance", "=", False),
+            ("include_initial_balance", "=", False),
         ]
         if account_ids:
             accounts_domain += [("id", "in", account_ids)]
@@ -77,7 +83,13 @@ class TrialBalanceReport(models.AbstractModel):
         else:
             domain += [("move_id.state", "in", ["posted", "draft"])]
         if show_partner_details:
-            domain += [("account_id.internal_type", "in", ["receivable", "payable"])]
+            domain += [
+                (
+                    "account_id.account_type",
+                    "in",
+                    ["asset_receivable", "liability_payable"],
+                )
+            ]
         return domain
 
     @api.model
@@ -93,7 +105,7 @@ class TrialBalanceReport(models.AbstractModel):
         show_partner_details,
     ):
         domain = [
-            ("display_type", "=", False),
+            ("display_type", "not in", ["line_note", "line_section"]),
             ("date", ">=", date_from),
             ("date", "<=", date_to),
         ]
@@ -110,7 +122,13 @@ class TrialBalanceReport(models.AbstractModel):
         else:
             domain += [("move_id.state", "in", ["posted", "draft"])]
         if show_partner_details:
-            domain += [("account_id.internal_type", "in", ["receivable", "payable"])]
+            domain += [
+                (
+                    "account_id.account_type",
+                    "in",
+                    ["asset_receivable", "liability_payable"],
+                )
+            ]
         return domain
 
     def _get_initial_balance_fy_pl_ml_domain(
@@ -125,7 +143,7 @@ class TrialBalanceReport(models.AbstractModel):
     ):
         accounts_domain = [
             ("company_id", "=", company_id),
-            ("user_type_id.include_initial_balance", "=", False),
+            ("include_initial_balance", "=", False),
         ]
         if account_ids:
             accounts_domain += [("id", "in", account_ids)]
@@ -143,7 +161,13 @@ class TrialBalanceReport(models.AbstractModel):
         else:
             domain += [("move_id.state", "in", ["posted", "draft"])]
         if show_partner_details:
-            domain += [("account_id.internal_type", "in", ["receivable", "payable"])]
+            domain += [
+                (
+                    "account_id.account_type",
+                    "in",
+                    ["asset_receivable", "liability_payable"],
+                )
+            ]
         return domain
 
     def _get_pl_initial_balance(
@@ -168,7 +192,7 @@ class TrialBalanceReport(models.AbstractModel):
         )
         initial_balances = self.env["account.move.line"].read_group(
             domain=domain,
-            fields=["account_id", "balance", "amount_currency"],
+            fields=["account_id", "balance", "amount_currency:sum"],
             groupby=["account_id"],
         )
         pl_initial_balance = 0.0
@@ -192,6 +216,8 @@ class TrialBalanceReport(models.AbstractModel):
             total_amount[acc_id]["debit"] = tb["debit"]
             total_amount[acc_id]["balance"] = tb["balance"]
             total_amount[acc_id]["initial_balance"] = 0.0
+            if foreign_currency:
+                total_amount[acc_id]["initial_currency_balance"] = 0.0
         for tb in tb_initial_acc:
             acc_id = tb["account_id"]
             if acc_id not in total_amount.keys():
@@ -254,31 +280,31 @@ class TrialBalanceReport(models.AbstractModel):
         partners_data = {}
         for tb in tb_period_prt:
             acc_id = tb["account_id"][0]
-            if tb["partner_id"]:
-                prt_id = tb["partner_id"][0]
-                if tb["partner_id"] not in partners_ids:
-                    partners_data.update(
-                        {prt_id: {"id": prt_id, "name": tb["partner_id"][1]}}
-                    )
-                total_amount[acc_id][prt_id] = self._prepare_total_amount(
-                    tb, foreign_currency
+            prt_id = tb["partner_id"][0] if tb["partner_id"] else 0
+            if prt_id not in partners_ids:
+                partner_name = (
+                    tb["partner_id"][1] if tb["partner_id"] else _("Missing Partner")
                 )
-                total_amount[acc_id][prt_id]["credit"] = tb["credit"]
-                total_amount[acc_id][prt_id]["debit"] = tb["debit"]
-                total_amount[acc_id][prt_id]["balance"] = tb["balance"]
-                total_amount[acc_id][prt_id]["initial_balance"] = 0.0
-                partners_ids.add(tb["partner_id"])
+                partners_data.update({prt_id: {"id": prt_id, "name": partner_name}})
+            total_amount[acc_id][prt_id] = self._prepare_total_amount(
+                tb, foreign_currency
+            )
+            total_amount[acc_id][prt_id]["credit"] = tb["credit"]
+            total_amount[acc_id][prt_id]["debit"] = tb["debit"]
+            total_amount[acc_id][prt_id]["balance"] = tb["balance"]
+            total_amount[acc_id][prt_id]["initial_balance"] = 0.0
+            partners_ids.add(prt_id)
         for tb in tb_initial_prt:
             acc_id = tb["account_id"][0]
-            if tb["partner_id"]:
-                prt_id = tb["partner_id"][0]
-                if tb["partner_id"] not in partners_ids:
-                    partners_data.update(
-                        {prt_id: {"id": prt_id, "name": tb["partner_id"][1]}}
-                    )
-                total_amount = self._compute_acc_prt_amount(
-                    total_amount, tb, acc_id, prt_id, foreign_currency
+            prt_id = tb["partner_id"][0] if tb["partner_id"] else 0
+            if prt_id not in partners_ids:
+                partner_name = (
+                    tb["partner_id"][1] if tb["partner_id"] else _("Missing Partner")
                 )
+                partners_data.update({prt_id: {"id": prt_id, "name": partner_name}})
+            total_amount = self._compute_acc_prt_amount(
+                total_amount, tb, acc_id, prt_id, foreign_currency
+            )
         return total_amount, partners_data
 
     def _remove_accounts_at_cero(self, total_amount, show_partner_details, company):
@@ -347,7 +373,7 @@ class TrialBalanceReport(models.AbstractModel):
         )
         tb_initial_acc_bs = self.env["account.move.line"].read_group(
             domain=initial_domain_bs,
-            fields=["account_id", "balance", "amount_currency"],
+            fields=["account_id", "balance", "amount_currency:sum"],
             groupby=["account_id"],
         )
         initial_domain_pl = self._get_initial_balances_pl_ml_domain(
@@ -362,7 +388,7 @@ class TrialBalanceReport(models.AbstractModel):
         )
         tb_initial_acc_pl = self.env["account.move.line"].read_group(
             domain=initial_domain_pl,
-            fields=["account_id", "balance", "amount_currency"],
+            fields=["account_id", "balance", "amount_currency:sum"],
             groupby=["account_id"],
         )
         tb_initial_acc_rg = tb_initial_acc_bs + tb_initial_acc_pl
@@ -392,20 +418,20 @@ class TrialBalanceReport(models.AbstractModel):
         )
         tb_period_acc = self.env["account.move.line"].read_group(
             domain=period_domain,
-            fields=["account_id", "debit", "credit", "balance", "amount_currency"],
+            fields=["account_id", "debit", "credit", "balance", "amount_currency:sum"],
             groupby=["account_id"],
         )
 
         if show_partner_details:
             tb_initial_prt_bs = self.env["account.move.line"].read_group(
                 domain=initial_domain_bs,
-                fields=["account_id", "partner_id", "balance", "amount_currency"],
+                fields=["account_id", "partner_id", "balance", "amount_currency:sum"],
                 groupby=["account_id", "partner_id"],
                 lazy=False,
             )
             tb_initial_prt_pl = self.env["account.move.line"].read_group(
                 domain=initial_domain_pl,
-                fields=["account_id", "partner_id", "balance", "amount_currency"],
+                fields=["account_id", "partner_id", "balance", "amount_currency:sum"],
                 groupby=["account_id", "partner_id"],
             )
             tb_initial_prt = tb_initial_prt_bs + tb_initial_prt_pl
@@ -419,7 +445,7 @@ class TrialBalanceReport(models.AbstractModel):
                     "debit",
                     "credit",
                     "balance",
-                    "amount_currency",
+                    "amount_currency:sum",
                 ],
                 groupby=["account_id", "partner_id"],
                 lazy=False,
@@ -731,4 +757,5 @@ class TrialBalanceReport(models.AbstractModel):
             "accounts_data": accounts_data,
             "partners_data": partners_data,
             "show_hierarchy_level": show_hierarchy_level,
+            "currency_model": self.env["res.currency"],
         }

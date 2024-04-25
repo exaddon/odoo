@@ -282,7 +282,9 @@ class AgedPartnerBalanceXslx(models.AbstractModel):
         """
         name = None
         label = _("Partner cumul aged balance")
-        super().write_ending_balance_from_dict(my_object, name, label, report_data)
+        return super().write_ending_balance_from_dict(
+            my_object, name, label, report_data
+        )
 
     def write_account_footer_from_dict(
         self,
