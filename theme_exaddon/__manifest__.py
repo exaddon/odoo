@@ -48,9 +48,9 @@
     'license': 'LGPL-3',
     'live_test_url': 'https://theme-clean.odoo.com',
     'assets': {
-        'website.assets_editor': [
-            'theme_exaddon/static/src/js/tour.js',
-        ],
+        # 'website.assets_editor': [
+        #     'theme_exaddon/static/src/js/tour.js',
+        # ],
 
     }
 }
