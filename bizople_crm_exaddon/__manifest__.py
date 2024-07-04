@@ -5,7 +5,7 @@
     # Theme information
     'name': 'Bizople CRM Exaddon',
     'category': 'Website',
-    'version': '14.0.0.0',
+    'version': '17.0.0.0',
     'author': 'Bizople Solutions Pvt. Ltd.',
     'website': 'https://www.bizople.com',
     'summary': 'Bizople CRM Exaddon',
