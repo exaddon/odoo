@@ -2,9 +2,9 @@
     'name': 'Exaddon Theme',
     'description': 'Exaddon Theme',
     'category': 'Theme/Services',
-    'summary': 'Corporate, Business, Tech, Services',
-    'sequence': 120,
-    'version': '17.0.0.0',
+    'summary': 'Exaddon',
+    'sequence': 1,
+    'version': '17.0.0.1',
     'depends': ['theme_common'],
     'data': [
         'data/generate_primary_template.xml',
@@ -48,9 +48,9 @@
     'license': 'LGPL-3',
     'live_test_url': 'https://theme-clean.odoo.com',
     'assets': {
-        # 'website.assets_editor': [
-        #     'theme_exaddon/static/src/js/tour.js',
-        # ],
+         'web.assets_frontend': [
+            '/theme_exaddon/static/src/scss/fonts.scss',
+        ],
 
     }
 }
