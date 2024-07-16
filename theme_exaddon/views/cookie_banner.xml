@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="cookie_banner" inherit_id="website.layout" name="Cookie Banner">
+
+    </template>
+</odoo>
