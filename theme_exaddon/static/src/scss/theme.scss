@@ -150,37 +150,6 @@ h1 {
     }
 }
 
-// Cookie Banner
-
-#cookie_banner {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    z-index: 9999;
-    background: theme-color('primary');
-    color: white;
-}
-
-#cookie_banner .container {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#cookie_banner a {
-    color: white;
-}
-
-#cookie_banner a:hover {
-    color: theme-color('secondary');;
-}
-
-#cookie_banner p {
-    margin: 0 1rem 0 0;
-}
-
 
 // custom change
 // .o_footer {
