@@ -47,7 +47,7 @@ try:
                 # Only up to 100 duplicates
                 deduplicated_secuence = "~{:02d}".format(duplicated_secuence + 1)
                 if duplicated_secuence > 99:
-                    raise xlsxwriter.exceptions.DuplicateWorksheetName
+                    raise xlsxwriter.exceptions.DuplicateWorksheetName  # noqa: B904
                 if duplicated_secuence:
                     sheetname = re.sub(pattern, deduplicated_secuence, sheetname)
                 elif len(sheetname) <= 28:
@@ -95,13 +95,18 @@ class ReportXlsxAbstract(models.AbstractModel):
         """Get the format to be used in cells (symbol included).
         Used in account_financial_report addon"""
         s_before = currency.symbol if currency.position == "before" else ""
+        print("s_before===================",s_before)
         s_after = " %s" % currency.symbol if currency.position == "after" else ""
+        print("s_after====================",s_after)
         return f"{f'{s_before}'}#,##0.{'0' * currency.decimal_places}{f'{s_after}'}"
 
     def create_xlsx_report(self, docids, data):
         objs = self._get_objs_for_report(docids, data)
+        print("objs=============",objs)
         file_data = BytesIO()
+        print("file_data===============================",file_data)
         workbook = xlsxwriter.Workbook(file_data, self.get_workbook_options())
+        print("objs=============", workbook)
         self.generate_xlsx_report(workbook, data, objs)
         workbook.close()
         file_data.seek(0)

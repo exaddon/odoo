@@ -4,14 +4,14 @@
 {
     'name': 'Bizople Purchase Exaddon',
     'category': 'Inventory/Purchase',
-    'version': '14.0.0.0',
+    'version': '17.0.0.0',
     'author': 'Bizople Solutions Pvt. Ltd.',
     'website': 'https://www.bizople.com',
     'summary': 'Bizople Purchase Exaddon',
     'description': """Bizople Purchase Exaddon""",
     'depends': [
         'purchase',
-        'purchase_stock',
+        'stock',
         'product',
     ],
 

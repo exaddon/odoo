@@ -30,7 +30,6 @@ class TestVATReport(AccountTestInvoicingCommon):
         )
         move_form.invoice_date = invoice_date or fields.Date.from_string("2019-01-01")
         move_form.partner_id = partner or cls.partner_a
-        move_form.name = name or "Test"
         lines = lines or []
         for line in lines:
             with move_form.invoice_line_ids.new() as line_form:
@@ -50,6 +49,16 @@ class TestVATReport(AccountTestInvoicingCommon):
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
+        cls.env = cls.env(
+            context=dict(
+                cls.env.context,
+                mail_create_nolog=True,
+                mail_create_nosubscribe=True,
+                mail_notrack=True,
+                no_reset_password=True,
+                tracking_disable=True,
+            )
+        )
         cls.date_from = time.strftime("%Y-%m-01")
         cls.date_to = time.strftime("%Y-%m-28")
         cls.company = cls.env.user.company_id
@@ -61,9 +70,9 @@ class TestVATReport(AccountTestInvoicingCommon):
             [
                 ("company_id", "=", cls.company.id),
                 (
-                    "user_type_id",
+                    "account_type",
                     "=",
-                    cls.env.ref("account.data_account_type_non_current_liabilities").id,
+                    "liability_non_current",
                 ),
             ],
             limit=1,

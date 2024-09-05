@@ -10,16 +10,23 @@ class IrActionsReport(models.Model):
     @api.model
     def _prepare_account_financial_report_context(self, data):
         lang = data and data.get("account_financial_report_lang") or ""
+        print("lang======================",lang)
         return dict(self.env.context or {}, lang=lang) if lang else False
 
     @api.model
-    def _render_qweb_html(self, docids, data=None):
+    def _render_qweb_html(self, report_ref, docids, data=None):
         context = self._prepare_account_financial_report_context(data)
-        obj = self.with_context(context) if context else self
-        return super(IrActionsReport, obj)._render_qweb_html(docids, data)
+        print("context======================",context)
+        obj = self.with_context(**context) if context else self
+        print("obj==================",obj)
+        return super(IrActionsReport, obj)._render_qweb_html(
+            report_ref, docids, data=data
+        )
 
     @api.model
-    def _render_xlsx(self, docids, data):
+    def _render_xlsx(self, report_ref, docids, data=None):
         context = self._prepare_account_financial_report_context(data)
-        obj = self.with_context(context) if context else self
-        return super(IrActionsReport, obj)._render_xlsx(docids, data)
+        print("context======================",context)
+        obj = self.with_context(**context) if context else self
+        print("obj=====================")
+        return super(IrActionsReport, obj)._render_xlsx(report_ref, docids, data=data)

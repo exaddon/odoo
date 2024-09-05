@@ -1,15 +1,13 @@
-@import url("https://fast.fonts.net/lt/1.css?apiType=css&c=4961922e-4e13-4df5-b4ff-89ade7f23598&fontids=774869,1475786,1475792,1475798,1475804,1475810,1475816,1475822,1475828,1475834,1475840,1475846,1475852,1475870");
 @font-face {
-    /* font-family: "Futura LT W01 Light"; */
     font-family: "Futura";
-    font-weight: 300;
-//     font-style: normal;
     src: url("/theme_exaddon/static/src/fonts/1475786/2b40e918-d269-4fd9-a572-19f5fec7cd7f.eot?#iefix");
     src: url("/theme_exaddon/static/src/fonts/1475786/2b40e918-d269-4fd9-a572-19f5fec7cd7f.eot?#iefix") format("eot"),
          url("/theme_exaddon/static/src/fonts/1475786/26091050-06ef-4fd5-b199-21b27c0ed85e.woff2") format("woff2"),
          url("/theme_exaddon/static/src/fonts/1475786/cca525a8-ad89-43ae-aced-bcb49fb271dc.woff") format("woff"),
          url("/theme_exaddon/static/src/fonts/1475786/88cc7a39-1834-4468-936a-f3c25b5d81a1.ttf") format("truetype");
+    font-weight: 300;
 }
+
 @font-face {
     /* font-family: "Futura LT W01 Light Oblique"; */
     font-family: "Futura";
@@ -131,19 +129,3 @@
          url("/theme_exaddon/static/src/fonts/1475852/c98bf34a-3735-4453-8e0b-4fee87a78bd8.woff") format("woff"),
          url("/theme_exaddon/static/src/fonts/1475852/0a40b703-0f34-4522-a66b-71269415fe7a.ttf") format("truetype");
 }
-/* @font-face {
-    font-family: "Futura LT W01 Medium Condensed";
-    src: url("/theme_exaddon/static/src/fonts/1475870/fbbd35b9-df6a-4550-8731-edef7cb1f764.eot?#iefix");
-    src: url("/theme_exaddon/static/src/fonts/1475870/fbbd35b9-df6a-4550-8731-edef7cb1f764.eot?#iefix") format("eot"),
-         url("/theme_exaddon/static/src/fonts/1475870/8f8e3475-0d53-4055-8dbc-997d3e7a73de.woff2") format("woff2"),
-         url("/theme_exaddon/static/src/fonts/1475870/5af82934-5078-4495-9aa1-bcaec40ea1e8.woff") format("woff"),
-         url("/theme_exaddon/static/src/fonts/1475870/886112d6-26ae-4248-9ec0-a357acf06bd7.ttf") format("truetype");
-}
-@font-face {
-    font-family: "Futura W01 Black";
-    src: url("/theme_exaddon/static/src/fonts/774869/100b737d-1725-4523-b1fc-d2a279733ab7.eot?#iefix");
-    src: url("/theme_exaddon/static/src/fonts/774869/100b737d-1725-4523-b1fc-d2a279733ab7.eot?#iefix") format("eot"),
-         url("/theme_exaddon/static/src/fonts/774869/d72b159d-2d4f-4eb7-8ee2-27eaed06f292.woff2") format("woff2"),
-         url("/theme_exaddon/static/src/fonts/774869/6a6f96a4-65cb-4644-aae9-f4a35f4b47a8.woff") format("woff"),
-         url("/theme_exaddon/static/src/fonts/774869/c78afce6-c389-467f-adae-6d3e774ae59b.ttf") format("truetype");
-} */
