@@ -22,12 +22,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: theme_exaddon
-#: model_terms:theme.ir.ui.view,arch:theme_exaddon.exaddon_snippet_options
+#: model_terms:theme.ir.ui.view,arch:theme_exaddon.clean_snippet_options
 msgid "<i class=\"fa fa-barcode\"/>Gradients"
 msgstr "<i class=\"fa fa-barcode\"/>Gradiënten"
 
 #. module: theme_exaddon
-#: model_terms:theme.ir.ui.view,arch:theme_exaddon.exaddon_snippet_options
+#: model_terms:theme.ir.ui.view,arch:theme_exaddon.clean_snippet_options
 msgid "None"
 msgstr "Geen"
 
