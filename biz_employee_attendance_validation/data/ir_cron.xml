@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- # -*- coding: utf-8 -*-
+# Part of Odoo Module Developed by Bizople Solutions Pvt. Ltd.
+# See LICENSE file for full copyright and licensing details. -->
+
+<odoo noupdate="1">
+    <record id="hr_employee_swiss_law" model="ir.cron">
+        <field
+            name="name"
+        >Employee's Daily Attendance Validation</field>
+        <field name="interval_number">30</field>
+        <field name="active" eval="True" />
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="model_id" ref="model_hr_employee" />
+        <field name="state">code</field>
+        <field name="code">model.action_daily_attendance_check()</field>
+    </record>
+
+    <record id="cron_fetch_weekly_attendance" model="ir.cron">
+        <field name="name">Employee's Weekly Attendance Validation</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">model.action_weekly_attendance_check()</field>
+        <field name="interval_type">weeks</field>
+        <field name="interval_number">1</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+    </record>
+</odoo>
