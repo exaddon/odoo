@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- -*- coding: utf-8 -*- -->
+<!-- Part of Odoo Module Developed by Bizople Solutions Pvt. Ltd. -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+
+<odoo>
+    <record id="view_employee_swiss_law_tree" model="ir.ui.view">
+        <field name="model">employee.swiss.law</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="working_hours" widget="float_time"/>
+                <field name="break_time" widget="float_time"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_employee_swiss_law_form" model="ir.ui.view">
+        <field name="model">employee.swiss.law</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="working_hours" widget="float_time"/>
+                            <field name="break_time" widget="float_time"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>   
+
+</odoo>

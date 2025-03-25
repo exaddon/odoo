@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- # -*- coding: utf-8 -*-
+# Part of Odoo Module Developed by Bizople Solutions Pvt. Ltd.
+# See LICENSE file for full copyright and licensing details. -->
+
+<odoo>
+    <data noupdate="0">
+        <record id="email_template_weekly_attendance" model="mail.template">
+            <field name="name">Weekly Attendance Compliance</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="email_from">{{object.company_id.email_formatted}}</field>
+            <field name="email_to">{{object.work_email}}</field>
+            <field name="subject">[Action Required] Attendance Compliance Report</field>
+            <field name="body_html" type="html">
+                <p>Dear Employee,</p>
+                <p>You have some irregularities in your attendance records. Please correct those according to Swiss law and consider the following:</p>              
+                <ul>
+                    <t t-if="ctx.get('swiss_law_list')">
+                        <t t-foreach="ctx.get('swiss_law_list')" t-as="law">
+                            <li><t t-out="law[0]"/> hrs work time, break <t t-out="law[1]"/>hrs</li>
+                        </t>
+                    </t>
+                </ul>
+                <p>Break between two working days &gt; <t t-out="ctx.get('min_rest_hours')"/> hrs</p>
+
+                <p>Please take necessary actions to ensure compliance.</p>
+            </field>
+        </record>
+
+        <record id="email_template_manager_weekly_attendance" model="mail.template">
+            <field name="name">Manager Attendance Compliance Report</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="email_from">{{object.company_id.email_formatted}}</field>
+            <field name="email_to">{{object.parent_id.work_email}}</field>
+            <field name="subject">Irregular Attendance Report</field>
+            <field name="body_html" type="html">
+                <p>Dear Manager,</p>
+                <p>The following employees have irregular attendance:</p>
+                <ul>
+                    <t t-foreach="ctx.get('employee_names', [])" t-as="emp_name">
+                        <li><strong><t t-out="emp_name"/></strong></li>
+                    </t>
+                </ul>
+                <p>Kindly review and ask them to correct their attendance.</p>
+                <p>Thanks &amp; Regards,</p>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
