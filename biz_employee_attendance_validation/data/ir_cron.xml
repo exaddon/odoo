@@ -3,7 +3,7 @@
 # Part of Odoo Module Developed by Bizople Solutions Pvt. Ltd.
 # See LICENSE file for full copyright and licensing details. -->
 
-<odoo noupdate="1">
+<odoo noupdate="0">
     <record id="hr_employee_swiss_law" model="ir.cron">
         <field
             name="name"
@@ -27,5 +27,6 @@
         <field name="interval_number">1</field>
         <field name="numbercall">-1</field>
         <field name="active">True</field>
+        <field name="nextcall" eval="datetime(2025, 4, 19, 5, 0, 0)"/>
     </record>
 </odoo>

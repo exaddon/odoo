@@ -12,7 +12,7 @@ class EmployeeSwissLaw(models.Model):
     _description = 'Employee Swiss Law'
 
     working_hours = fields.Float(string="Working Hours")
-    break_time = fields.Float(string="Break Duration (Minutes)")
+    break_time = fields.Float(string="Break Duration")
     company_id = fields.Many2one('res.company',string="company")
 
     

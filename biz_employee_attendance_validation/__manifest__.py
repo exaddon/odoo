@@ -6,7 +6,7 @@
 {
     'name': "Employee's Attendance Validation" ,
     'category': 'Human Resources/Attendances',
-    'version': '17.0.0.0',
+    'version': '17.0.0.1',
     'sequence':1,
     'author': 'Bizople Solutions Pvt. Ltd.',
     'website': 'https://www.bizople.com',

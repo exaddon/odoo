@@ -16,20 +16,21 @@ class HrEmployeePrivate(models.Model):
 
     @api.model
     def action_daily_attendance_check(self):
+        today_str = fields.Date.today().strftime('%Y-%m-%d')
         now = fields.Datetime.now()
-        today_start = fields.Datetime.to_datetime(fields.Date.today())                                 
+        today_start = fields.Datetime.to_datetime(fields.Date.today())
         today_end = today_start.replace(hour=23, minute=59, second=59)
         company = self.env.company        
         working_hours_break_pairs = {
             rec.working_hours: rec.break_time for rec in company.swiss_law_ids
-        }    
+        }
  
         employees = self.env['hr.employee'].search([('attendance_non_compliant', '=', False)])
 
         for emp in employees:
             _logger.info("Checking Employee: %s", emp.name)
             company = emp.company_id
-            total_gap_hours = timedelta(hours=company.total_gap_hours if company.total_gap_hours else 11)
+            total_gap_hours = timedelta(hours=company.total_gap_hours)
 
             attendances = self.env['hr.attendance'].search([
                 ('employee_id', '=', emp.id),
@@ -57,8 +58,9 @@ class HrEmployeePrivate(models.Model):
 
                     if rest_time < total_gap_hours:
                         self._send_message(emp, 
-                            "Dear Employee, you have irregularities in your attendance records, please correct those to comply to swiss law."
+                            f"Dear Employee, on {today_str}, our records indicate insufficient rest time between your workdays. Please ensure compliance with mandatory rest periods under Swiss labor law."
                         )
+
     
             # Continuous Work Without Check-Out
             if attendances and attendances[-1].check_out is False:
@@ -66,8 +68,9 @@ class HrEmployeePrivate(models.Model):
                 for i in working_hours_break_pairs:
                     if continuous_work > i:
                         self._send_message(emp, 
-                            "Dear Employee, you have irregularities in your attendance records, please correct those to comply to swiss law."
+                            f"Dear Employee, on {today_str}, it appears you have been working continuously without a recorded break. Please review your attendance to ensure compliance with Swiss labor regulations."
                         )
+
                 
             # check multiple checkin checkout and breaks with swiss law
             if attendances:
@@ -87,6 +90,7 @@ class HrEmployeePrivate(models.Model):
 
                 total_working_hours = total_working_time.total_seconds() / 3600
                 work_gap = total_duration - total_working_hours
+                
 
                 is_invalid = []
                 
@@ -94,7 +98,9 @@ class HrEmployeePrivate(models.Model):
                     if total_working_hours >= k and work_gap < v:
                         is_invalid.append(True)
                 if any(is_invalid):
-                    self._send_message(emp, "Dear Employee, you have irregularities in your attendance records, please correct those to comply to swiss law.")
+                    self._send_message(emp, 
+                        f"Dear Employee, on {today_str}, you have irregularities in your attendance records. Please correct those to comply with Swiss labor law."
+                    )
 
     
     def _send_message(self, emp, message):
@@ -125,6 +131,7 @@ class HrEmployeePrivate(models.Model):
         
         employees = self.env['hr.employee'].search([('attendance_non_compliant', '=', False)])
         non_compliant_employees = {}
+        _logger.info("non_compliant_employees>>>>>>>>>>>>>>>>>>>>>>>%s",non_compliant_employees)
 
         start_date = datetime(2025, 4, 1)
         end_date = datetime.now()
@@ -146,7 +153,7 @@ class HrEmployeePrivate(models.Model):
         for emp in employees:
             _logger.info("Checking Employee: %s", emp.name)
             company = emp.company_id
-            total_gap_hours = timedelta(hours=company.total_gap_hours if company.total_gap_hours else 11)
+            total_gap_hours = timedelta(hours=company.total_gap_hours)
             
             for i, week in enumerate(weeks, 1):
                 print(f"Week {i}:", week)
@@ -175,7 +182,7 @@ class HrEmployeePrivate(models.Model):
                         if last_yesterday_checkout and first_today_checkin:
                             rest_time = first_today_checkin - last_yesterday_checkout
                             if rest_time < total_gap_hours:
-                                non_compliant_employees.setdefault(emp, []).append(f"Insufficient rest on {day_start}")
+                                non_compliant_employees.setdefault(emp, []).append(f"Insufficient rest on {day_start.date()}")
                     
                     # Check if break time is sufficient
                     if attendances:
@@ -194,7 +201,7 @@ class HrEmployeePrivate(models.Model):
                         
                         for work_hours, break_time in working_hours_break_pairs.items():
                             if total_working_hours >= work_hours and work_gap < break_time:
-                                non_compliant_employees.setdefault(emp, []).append(f"Insufficient break time on {day_start}")
+                                non_compliant_employees.setdefault(emp, []).append(f"Insufficient break time on {day_start.date()}")
         
         for emp, violations in non_compliant_employees.items():
             self.send_emp_email(emp, violations)
@@ -222,7 +229,8 @@ class HrEmployeePrivate(models.Model):
                 )
                 for law in swiss_law_records
             ],
-            'min_rest_hours': f"{int(emp.company_id.total_gap_hours):02}:{int((emp.company_id.total_gap_hours % 1) * 60):02}"
+            'min_rest_hours': f"{int(emp.company_id.total_gap_hours):02}:{int((emp.company_id.total_gap_hours % 1) * 60):02}",
+            'violation_details': violations,
         }
         template_ref = self.env.ref('biz_employee_attendance_validation.email_template_weekly_attendance')
         template_ref.with_context(**context).send_mail(emp.id, force_send=True, raise_exception=True, email_values=email_values)
@@ -230,17 +238,32 @@ class HrEmployeePrivate(models.Model):
     def send_manager_email(self, manager, emp_violations):
         if not manager or not manager.work_email:
             return
+
         email_values = {
             'email_to': manager.work_email,
-        }        
-        emp_names = list(set(emp.name for emp, _ in emp_violations))
-        template_ref = self.env.ref('biz_employee_attendance_validation.email_template_manager_weekly_attendance')
-        context = {
-            'employee_names': emp_names,
         }
-        template_ref.with_context(**context).send_mail(manager.id, force_send=True, raise_exception=True,email_values=email_values)
+
+        violations_list = [
+            {
+                'employee': emp.name,
+                'violations': violations,  
+            }
+            for emp, violations in emp_violations
+        ]
+
+        context = {
+            'violation_details': violations_list,
+        }
+
+        template_ref = self.env.ref('biz_employee_attendance_validation.email_template_manager_weekly_attendance')
+        template_ref.with_context(**context).send_mail(manager.id, force_send=True, raise_exception=True, email_values=email_values)
+
 
         
+class HrEmployeePublic(models.Model):
+    _inherit = 'hr.employee.public'
+
+    attendance_non_compliant = fields.Boolean(string="Disable Break Time Check")         
 
 
         

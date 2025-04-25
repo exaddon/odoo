@@ -22,7 +22,12 @@
                     </t>
                 </ul>
                 <p>Break between two working days &gt; <t t-out="ctx.get('min_rest_hours')"/> hrs</p>
-
+                <p><strong>Violations:</strong></p>
+                <ul>
+                    <t t-foreach="ctx.get('violation_details', [])" t-as="violation">
+                        <li><t t-out="violation"/></li>
+                    </t>
+                </ul>
                 <p>Please take necessary actions to ensure compliance.</p>
             </field>
         </record>
@@ -37,8 +42,13 @@
                 <p>Dear Manager,</p>
                 <p>The following employees have irregular attendance:</p>
                 <ul>
-                    <t t-foreach="ctx.get('employee_names', [])" t-as="emp_name">
-                        <li><strong><t t-out="emp_name"/></strong></li>
+                    <t t-foreach="ctx.get('violation_details', [])" t-as="record">
+                        <p><strong><t t-out="record['employee']"/></strong></p>
+                        <ul>
+                            <t t-foreach="record['violations']" t-as="violation">
+                                <li><t t-out="violation"/></li>
+                            </t>
+                        </ul>
                     </t>
                 </ul>
                 <p>Kindly review and ask them to correct their attendance.</p>
