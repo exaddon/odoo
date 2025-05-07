@@ -39,6 +39,7 @@ class HrAttendance(models.Model):
             ('employee_id', '=', employee.id),
             ('state', '=', 'validate'),
             ('date_from', '<=', date),
-            ('date_to', '>=', date)
+            ('date_to', '>=', date),
+            ('number_of_days', '>=', 1),
         ], limit=1)
         return bool(leave)
