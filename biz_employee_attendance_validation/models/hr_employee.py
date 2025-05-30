@@ -64,9 +64,25 @@ class HrEmployeePrivate(models.Model):
     
             # Continuous Work Without Check-Out
             if attendances and attendances[-1].check_out is False:
+                total_working_time = timedelta(0)
+                first_checkin = attendances[0].check_in
+                last_checkout = attendances[-1].check_out if attendances[-1].check_out else now
+
+                if first_checkin and last_checkout:
+                    duration = last_checkout - first_checkin
+                    total_duration = duration.total_seconds() / 3600
+                
+                for att in attendances:
+                    check_in = att.check_in
+                    check_out = att.check_out if att.check_out else now
+                    working_time = check_out - check_in
+                    total_working_time += working_time
+                total_working_hours = total_working_time.total_seconds() / 3600
+                work_gap = total_duration - total_working_hours
+
                 continuous_work = (now - attendances[-1].check_in).total_seconds() / 3600  # Convert to float in hours
                 for i in working_hours_break_pairs:
-                    if continuous_work > i:
+                    if continuous_work > i and working_hours_break_pairs.get(i, 0) > work_gap:
                         self._send_message(emp, 
                             f"Dear Employee, on {today_str}, it appears you have been working continuously without a recorded break. Please review your attendance to ensure compliance with Swiss labor regulations."
                         )
