@@ -1,34 +1,42 @@
+# -*- coding: utf-8 -*-
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from datetime import datetime, timedelta
 
 class HrAttendanceOvertime(models.Model):
-    _inherit = 'hr.attendance.overtime'
+    _name = "hr.attendance.overtime"
+    _description = "Attendance Overtime"
+    _rec_name = 'employee_id'
+    _order = 'date desc'
 
-    @api.depends('employee_id', 'date', 'worked_hours')
-    def _compute_duration(self):
-        """Override overtime computation to respect part-time and planned hours"""
-        for rec in self:
-            if not rec.employee_id:
-                rec.duration = 0.0
-                continue
+    def _default_employee(self):
+        return self.env.user.employee_id
 
-            calendar = rec.employee_id.resource_calendar_id
-            if not calendar:
-                rec.duration = 0.0
-                continue
+    employee_id = fields.Many2one(
+        'hr.employee', string="Employee", default=_default_employee,
+        required=True, ondelete='cascade', index=True)
+    company_id = fields.Many2one(related='employee_id.company_id', store=True)
+    date = fields.Date(string='Day')
+    duration = fields.Float(string='Extra Hours', default=0.0, required=True)
+    duration_real = fields.Float(
+        string='Extra Hours (Real)', default=0.0,
+        help="Extra-hours including the threshold duration")
+    adjustment = fields.Boolean(default=False)
 
-            # Compute expected hours for this specific day
-            expected_hours = calendar.get_work_hours_count(
-                start_dt=rec.date,
-                end_dt=rec.date + fields.Date.timedelta(days=1),
-                resource_id=rec.employee_id.id
-            )
+    def init(self):
+        # Allows only 1 overtime record per employee per day unless it's an adjustment
+        self.env.cr.execute("""
+            CREATE UNIQUE INDEX IF NOT EXISTS hr_attendance_overtime_unique_employee_per_day
+            ON %s (employee_id, date)
+            WHERE adjustment is false
+        """ % (self._table))
 
-            # Overtime = worked hours - expected hours
-            rec.duration = max(rec.worked_hours - expected_hours, 0.0)
-
+    @api.model
     def recompute_all_overtime(self):
-        """Recompute duration for all existing overtime records"""
-        for rec in self.search([]):
-            rec._compute_duration()
+        """
+        Safely recompute duration and duration_real for all existing overtime records
+        by calling the standard _update_overtime method on hr.attendance records.
+        """
+        all_attendances = self.env['hr.attendance'].search([])
+        for attendance in all_attendances:
+            attendance._update_overtime()
         return True
