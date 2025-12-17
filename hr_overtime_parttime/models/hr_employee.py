@@ -1,4 +1,4 @@
-  from odoo import models, fields, api
+from odoo import models, fields, api
 from odoo.tools.float_utils import float_round
 
 class HrEmployee(models.Model):
