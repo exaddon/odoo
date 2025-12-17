@@ -1,12 +1,14 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'HR Overtime Balance (Calendar Based)',
-    'version': '17.0.1.0.0',
-    'summary': 'Correct overtime calculation based on resource calendar',
+    'name': 'HR Extra Hours Computation',
+    'version': '1.0',
     'category': 'Human Resources',
-    'depends': [
-        'hr_attendance',
-    ],
+    'summary': 'Compute extra hours using attendance logic',
+    'description': 'Calculates extra hours for employees based on worked vs expected hours like the Attendance app.',
+    'author': 'Custom',
+    'depends': ['hr', 'hr_attendance'],
     'data': [],
     'installable': True,
     'application': False,
+    'auto_install': False,
 }
