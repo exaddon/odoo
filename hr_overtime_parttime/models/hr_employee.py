@@ -1,27 +1,16 @@
+# -*- coding: utf-8 -*-
 from odoo import models, fields, api
 from datetime import datetime, time
 import pytz
-
+from odoo.tools.float_utils import float_round
 
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
-    total_overtime = fields.Float(
-        string="Total Overtime",
-        compute="_compute_total_overtime",
-        store=True,
-        compute_sudo=True,
-    )
+    overtime_ids = fields.One2many('hr.attendance.overtime', 'employee_id', string="Overtime Records")
+    total_overtime = fields.Float(string="Total Overtime", compute="_compute_total_overtime", store=True, compute_sudo=True)
 
-    def _recompute_total_overtime(self):
-        self.invalidate_recordset(['total_overtime'])
-        self._compute_total_overtime()
-
-    @api.depends(
-        'attendance_ids.worked_hours',
-        'resource_calendar_id',
-        'contract_id.date_start',
-    )
+    @api.depends('attendance_ids.worked_hours', 'resource_calendar_id', 'contract_id.date_start')
     def _compute_total_overtime(self):
         Attendance = self.env['hr.attendance']
 
@@ -33,25 +22,20 @@ class HrEmployee(models.Model):
             tz = pytz.timezone(emp.resource_calendar_id.tz or 'UTC')
 
             start = datetime.combine(emp.contract_id.date_start, time.min)
-            start = tz.localize(start).astimezone(pytz.utc).replace(tzinfo=None)
+            start = tz.localize(start)
             end = datetime.utcnow()
+            end = pytz.utc.localize(end).astimezone(tz)
 
             attendances = Attendance.search([
                 ('employee_id', '=', emp.id),
-                ('check_in', '>=', start),
-                ('check_out', '<=', end),
+                ('check_in', '>=', start.astimezone(pytz.utc)),
+                ('check_out', '<=', end.astimezone(pytz.utc)),
             ])
-            worked = sum(att.worked_hours for att in attendances)
+            worked_hours = sum(att.worked_hours or 0 for att in attendances)
 
             intervals = emp.resource_calendar_id._work_intervals_batch(
-                start,
-                end,
-                resources=emp.resource_id,
-            )[emp.resource_id.id]
+                start, end, resources=emp.resource_id
+            ).get(emp.resource_id.id, [])
 
-            expected = sum(
-                (i[1] - i[0]).total_seconds() / 3600
-                for i in intervals
-            )
-
-            emp.total_overtime = worked - expected
+            expected_hours = sum((i[1] - i[0]).total_seconds() / 3600.0 for i in intervals)
+            emp.total_overtime = float_round(worked_hours - expected_hours, 2)
