@@ -1,0 +1,35 @@
+.blog-item {
+    padding: 25px 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.blog-date {
+    font-size: 14px;
+    color: #6c757d;
+    min-width: 90px;
+}
+
+.blog-title {
+    font-weight: 500;
+}
+
+.blog-title a {
+    text-decoration: none;
+    color: #212529;
+}
+
+.blog-title a:hover {
+    text-decoration: underline;
+}
+
+.view-link {
+    font-size: 14px;
+    text-decoration: none;
+    color: #000;
+    border-bottom: 1px solid #000;
+    padding-bottom: 2px;
+}
+
+.view-link:hover {
+    opacity: 0.7;
+}

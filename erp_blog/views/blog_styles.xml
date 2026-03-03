@@ -1,0 +1,69 @@
+<odoo>
+    <template id="blog_post_video">
+        <a t-attf-href="#{record.page_url}" class="text-decoration-none d-block">
+            <div class="media_iframe_video">
+                <div class="css_editable_mode_display" data-bs-original-title="blog_video" title=""/>
+                <div class="media_iframe_video_size"/>
+                <t t-raw="record.iframe"/>
+            </div>
+            <h4 class="mt32">
+                <font style="font-size: 24px;" class="text-o-color-1">
+                    <t t-esc="record.name"/>
+                </font>
+            </h4>
+            <p class="mt16 text-justify" style="font-size: 16px;">
+                <t t-raw="record.subtitle"/>
+            </p>
+        </a>
+
+    </template>
+    <template id="blog_list_publications">
+        <div class="row blog-item align-items-center">
+            <div class="col-md-2 blog-date">
+                <t t-esc="record.publication_date"/>
+            </div>
+            <div class="col-md-8 blog-title">
+                <t t-esc="record.name"/>
+                <p style="font-size: 14px;" class="text-justify mt-2">
+                    <t t-raw="record.subtitle"/>
+                </p>
+
+            </div>
+            <div class="col-md-2 text-md-end mt-3 mt-md-0">
+                <a t-attf-href="#{record.page_url}" class="view-link">
+                    View paper →
+                </a>
+            </div>
+        </div>
+
+
+    </template>
+    <template id="blog_card_download">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <div class="card shadow-sm border-0">
+                        <div class="mt-1">
+                            <img t-attf-src="/web/image/blog.post/#{record.id}/erp_image" class="card-img-top img-fluid"/>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-danger">
+                                <t t-esc="record.name"/>
+                            </h5>
+
+                            <p class="card-text text-muted small">
+                                <t t-esc="record.subtitle"/>
+                            </p>
+                            <a t-attf-href="/web/content/#{record.download_attachment.id}?download=True"
+                               lass="btn btn-danger text-uppercase fw-bold w-100">
+                                Download the Buyer’s Guide
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </template>
+</odoo>
