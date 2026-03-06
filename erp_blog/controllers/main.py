@@ -35,7 +35,7 @@ class BlogInherit(WebsiteBlog):
             blog = Blog.search([('website_id', '=', request.website.id)], limit=1, order='sequence')
             url = QueryURL('/resources/%s' % slug(blog), search=search, **opt)()
             return request.redirect(url, code=302)
-        blogs = tools.lazy(lambda: Blog.search(request.website.website_domain(), order="create_date desc, id asc"))
+        blogs = tools.lazy(lambda: Blog.search(request.website.website_domain(), order="sequence"))
 
         if not blog and len(blogs) == 1:
             url = QueryURL('/resources/%s' % slug(blogs[0]), search=search, **opt)()
