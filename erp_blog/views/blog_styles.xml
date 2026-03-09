@@ -20,7 +20,13 @@
     <template id="blog_list_publications">
         <div class="row blog-item align-items-center">
             <div class="col-md-2 blog-date">
-                <t t-esc="record.publication_date"/>
+                <t t-if="record.publication_date">
+                    <t t-esc="record.publication_date.year"/>
+                </t>
+                <t t-else="">
+                    <t t-esc="record.publication_date"/>
+                </t>
+
             </div>
             <div class="col-md-8 blog-title">
                 <t t-esc="record.name"/>
