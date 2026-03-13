@@ -54,7 +54,7 @@
                                  class="card-img-top img-fluid"/>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title text-danger">
+                            <h5 class="card-title">
                                 <t t-esc="record.name"/>
                             </h5>
 
