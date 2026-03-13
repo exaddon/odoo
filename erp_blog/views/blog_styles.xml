@@ -50,7 +50,8 @@
                 <div class="col">
                     <div class="card shadow-sm border-0">
                         <div class="mt-1">
-                            <img t-attf-src="/web/image/blog.post/#{record.id}/erp_image" class="card-img-top img-fluid"/>
+                            <img t-attf-src="/web/image/blog.post/#{record.id}/erp_image"
+                                 class="card-img-top img-fluid"/>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title text-danger">
@@ -60,12 +61,86 @@
                             <p class="card-text text-muted small">
                                 <t t-esc="record.subtitle"/>
                             </p>
-                            <a t-attf-href="/web/content/#{record.download_attachment.id}?download=True"
-                               lass="btn btn-danger text-uppercase fw-bold w-100">
-                                Download the Buyer’s Guide
-                            </a>
+                            <t t-if="record.use_form">
+                                 <a t-attf-href="#downloadModal-#{record.id}" data-bs-toggle="modal">
+                                    Download the Buyer’s Guide
+                                </a>
+                            </t>
+                            <t t-else="">
+                                <a t-attf-href="/web/content/#{record.download_attachment.id}?download=True" >
+                                    Download the Buyer’s Guide
+                                </a>
+                            </t>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div t-if='record.use_form' class="modal fade" t-attf-id="downloadModal-#{record.id}" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Download the Buyer’s Guide</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"/>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <section class="s_website_form pt16 pb16">
+                            <div class="o_container_small">
+
+                                <form action="/website/form/"
+                                      method="post"
+                                      enctype="multipart/form-data"
+                                      class="o_mark_required"
+                                      data-model_name="crm.lead"
+                                      data-success-mode="redirect"
+                                      t-attf-data-success-page="/web/content/#{record.download_attachment.id}?download=True"
+                                >
+
+                                    <div class="row">
+
+                                        <div class="col-12 mb-3">
+                                            <label>Name *</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   name="name"
+                                                   required="1"/>
+                                        </div>
+
+                                        <div class="col-12 mb-3">
+                                            <label>Your Email *</label>
+                                            <input class="form-control"
+                                                   type="email"
+                                                   name="email_from"
+                                                   required="1"/>
+                                        </div>
+
+                                        <div class="col-12 mb-3">
+                                            <label>Company *</label>
+                                            <input class="form-control"
+                                                   type="text"
+                                                   name="Company"
+                                                   required="1"/>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <button type="submit" data-bs-dismiss="modal"
+                                                    class="btn btn-primary w-100">
+                                                Submit
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </section>
+
+                    </div>
+
                 </div>
             </div>
         </div>

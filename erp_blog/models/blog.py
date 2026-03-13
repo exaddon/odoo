@@ -24,5 +24,5 @@ class BlogPost(models.Model):
     publication_date = fields.Date(string='Publication Date')
     download_attachment = fields.Many2one('ir.attachment', string='Download Attachment',
                                           domain="[('public', '=', True)]")
-
+    use_form = fields.Boolean(string='Download Form', help='Use form before download')
     erp_image = fields.Binary(string='Image', help="The image to display in the blog post. Only used when the style is set to 'publication' or 'download'.")
