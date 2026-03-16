@@ -28,10 +28,7 @@ class BlogInherit(WebsiteBlog):
         '/blog',
     ], type='http', auth='public', website=True)
     def blog_redirect(self, subpath=None, **kwargs):
-        print('WORK THIS OR NOT3')
-        print('WORK THIS OR NOT')
-        print('WORK THIS OR NOT2')
-        print('WORK THIS OR NOT1')
+
         if not subpath:
             return redirect('/resources', code=301)
 
@@ -49,7 +46,6 @@ class BlogInherit(WebsiteBlog):
     ], type='http', auth="public", website=True, sitemap=True)
     def blog(self, blog=None, tag=None, page=1, search=None, **opt):
         Blog = request.env['blog.blog']
-        blog = Blog.search([('website_id', '=', request.website.id)], limit=1, order='sequence')
         if not blog:
             blog = Blog.search([('website_id', '=', request.website.id)], limit=1, order='sequence')
             url = QueryURL('/resources/%s' % slug(blog), search=search, **opt)()
