@@ -12,7 +12,9 @@
     ],
     'assets': {
         'web.assets_frontend': [
+            'erp_blog/static/src/js/blog.js',
             'erp_blog/static/src/scss/blog.scss',
+
         ]
     },
     'application': True,

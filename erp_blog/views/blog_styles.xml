@@ -30,7 +30,7 @@
             </div>
             <div class="col-md-8 blog-title">
                 <t t-esc="record.name"/>
-                <p style="font-size: 14px;" class="text-justify mt-2">
+                <p style="font-size: 14px;" class="text-justify mt-2 fw-bold">
                     <t t-raw="record.subtitle"/>
                 </p>
 

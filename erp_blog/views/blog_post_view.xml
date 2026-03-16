@@ -159,12 +159,31 @@
             </div>
         </div>
     </template>
+    <template id="post_heading_inherit" inherit_id="website_blog.post_heading">
+        <!-- Replace the <a> href -->
+        <xpath expr="//a" position="replace">
+            <a t-attf-href="/resources/#{slug(blog_post.blog_id)}/#{slug(blog_post)}"
+       t-field="blog_post.name"
+       t-attf-class="d-block text-reset text-decoration-none o_blog_post_title my-0 #{'h3' if opt_blog_list_view else ('h5' if opt_blog_readable else 'h6')}">
+       Untitled Post
+   </a>
+        </xpath>
+    </template>
 
     <template inherit_id="website_blog.blog_post_short" id="erp_website_blog">
         <xpath expr="//div[@id='o_wblog_posts_loop_container']/t[@t-call='website_blog.posts_loop']" position="replace">
             <t t-call="erp_blog.posts_loop">
                 <t t-if="not blog" t-set="posts_list_show_parent_blog" t-value="True"/>
             </t>
+        </xpath>
+        <xpath expr="//t[@t-call='website.pager']" position="replace">
+            <div t-if="pager['page_count'] > 1" class="d-flex justify-content-center pt-3 pb-3 brand-pager">
+                <a href="#" class="btn btn-light border post-loader"
+                   t-if="not pager['page']['num'] == pager['page_count']"
+                   t-att-href="pager['page_next']['url']">
+                    Load more
+                </a>
+            </div>
         </xpath>
     </template>
     <template inherit_id="website_blog.blogs_nav" name="Blogs Bar Template" id="erp_blog_nav">

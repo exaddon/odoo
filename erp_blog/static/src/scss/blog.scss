@@ -39,3 +39,14 @@
         text-align: center;
     }
 }
+
+.js_blog .navbar-nav {
+    column-gap: 15px;
+    .nav-link b {
+    font-weight: normal;
+    }
+}
+
+.blog_header .text-muted.mb-2 {
+    display: none;
+}
