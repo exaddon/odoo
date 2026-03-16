@@ -41,9 +41,14 @@
 }
 
 .js_blog .navbar-nav {
-    column-gap: 15px;
+    column-gap: 25px;
     .nav-link b {
-    font-weight: normal;
+        font-weight: normal;
+        font-family: "Schibsted Grotesk", "Odoo Unicode Support Noto", sans-serif;
+    }
+    .nav-link:hover{
+        color: black !important;
+
     }
 }
 
