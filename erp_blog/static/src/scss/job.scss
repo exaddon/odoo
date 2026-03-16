@@ -1,0 +1,19 @@
+#jobs_grid {
+    .card {
+        border: none;
+        border-bottom: 1px solid var(--o-border-color) !important;
+        border-radius: unset !important;
+    }
+    .o_job_infos {
+        font-size: 14px;
+        color: rgba(33, 37, 41, 0.7) !important;
+
+    }
+    .left-border::before {
+        content: "";
+        width: 1px;
+        height: 14px;
+        margin-right: 6px;
+        background: #ccc;
+    }
+}

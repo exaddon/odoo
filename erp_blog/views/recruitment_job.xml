@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="erp_index" name="ERP Jobs" inherit_id="website_hr_recruitment.index">
+        <xpath expr='//div[@t-foreach="jobs"]' position="replace">
+            <div t-foreach="jobs" t-as="job" class="col-lg mb32">
+                <div t-attf-class="card #{not job.website_published and 'o_jobs_unpublished'}">
+                    <a t-attf-href="/jobs/#{ slug(job) }"
+                       t-attf-class="text-decoration-none text-reset"
+                       draggable="false">
+                        <div class="card-body p-4">
+                            <div class="d-flex flex-row justify-content-between">
+                                <div>
+                                    <div class="mt0 d-flex justify-content-between align-items-center">
+                                        <h3 class="fw-bold" t-field="job.name"/>
+                                        <span t-if="not job.website_published" class="badge bg-danger mb8 p-2">
+                                            unpublished
+                                        </span>
+                                    </div>
+                                    <h5 t-if="job.no_of_recruitment >= 3" class="text-reset ">
+                                        <span t-field="job.no_of_recruitment"/>
+                                        <t t-if="job.no_of_recruitment == 1">
+                                            open position
+                                        </t>
+                                        <t t-else="">
+                                            open positions
+                                        </t>
+                                    </h5>
+                                    <t t-set="job_desc_edition_placeholder">Insert a Job Description...</t>
+                                    <div class="oe_empty mb16 d-flex">
+                                        <p t-field="job.description"
+                                         t-att-data-editor-message="job_desc_edition_placeholder"/>
+                                        <p t-if="job.contract_type_id.name">, <t t-esc="job.contract_type_id.name"/></p>
+                                    </div>
+                                    <div class="o_job_infos d-flex flex-row gap-2">
+                                        <span class="fw-light">
+                                            <t t-esc="job.create_date.strftime('%d.%m.%Y') if job.create_date else ''"/>
+                                        </span>
+                                        <div t-if="job.department_id"
+                                             class="d-inline-flex align-items-center left-border">
+                                            <span t-field="job.department_id" class="fw-light"
+                                                  t-options='{"fields": ["name"], "no_tag_br": True}'/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="link d-flex justify-content-center align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                         viewBox="-19.04 0 75.804 75.804">
+                                        <g transform="translate(-831.568 -384.448)">
+                                            <path d="M833.068,460.252a1.5,1.5,0,0,1-1.061-2.561l33.557-33.56a2.53,2.53,0,0,0,0-3.564l-33.557-33.558a1.5,1.5,0,0,1,2.122-2.121l33.556,33.558a5.53,5.53,0,0,1,0,7.807l-33.557,33.56A1.5,1.5,0,0,1,833.068,460.252Z"
+                                                  fill="#000"/>
+                                        </g>
+                                    </svg>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
