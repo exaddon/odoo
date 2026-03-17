@@ -63,12 +63,12 @@
                             </p>
                             <t t-if="record.use_form">
                                  <a t-attf-href="#downloadModal-#{record.id}" data-bs-toggle="modal">
-                                    Download the Buyer’s Guide
+                                    Download
                                 </a>
                             </t>
                             <t t-else="">
                                 <a t-attf-href="/web/content/#{record.download_attachment.id}?download=True" >
-                                    Download the Buyer’s Guide
+                                    Download
                                 </a>
                             </t>
                         </div>
@@ -81,7 +81,7 @@
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h5 class="modal-title">Download the Buyer’s Guide</h5>
+                        <h5 class="modal-title">Download</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"/>
                     </div>
 
