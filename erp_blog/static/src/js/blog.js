@@ -27,7 +27,7 @@ publicWidget.registry.ErpWebsiteBlog = publicWidget.Widget.extend({
              const tempDiv = document.createElement("div");
              tempDiv.innerHTML = result;
              const newItem = tempDiv.querySelector("#o_wblog_index_content");
-             const currentItem = $("#o_wblog_index_content");
+             const currentItem = $("#o_wblog_index_content").last();
              if (newItem && currentItem) {
                 currentItem.after(newItem);
                 history.pushState({}, "", url);
