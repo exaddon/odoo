@@ -217,14 +217,14 @@
                             </a>
                             <div id="o_wblog_offcanvas" class="offcanvas offcanvas-end d-lg-none">
                                 <div class="offcanvas-header">
-                                    <h5 class="offcanvas-title my-0">Blogs</h5>
+                                    <h5 class="offcanvas-title my-0">Resources</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                             aria-label="Close"/>
                                 </div>
                                 <div class="offcanvas-body">
                                     <ul class="nav navbar-nav">
                                         <li t-foreach="blogs" t-as="nav_blog" class="nav-item">
-                                            <a t-attf-href="/blog/#{slug(nav_blog)}"
+                                            <a t-attf-href="/blog/#{slug(nav_blog)}" data-bs-dismiss="offcanvas"
                                                t-attf-class="nav-link #{(blog and nav_blog.id == blog.id) and 'active' or ''}"
                                                t-att-title="nav_blog.name">
                                                 <span t-field="nav_blog.name"/>
