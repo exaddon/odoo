@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- -*- coding: utf-8 -*- -->
+<!-- Part of Odoo Module Developed by Bizople Solutions Pvt. Ltd. -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+
+<odoo>
+    <record id="view_company_form_inherit_attendance_irregularity" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.attendance.monitor</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">           
+            <xpath expr="//field[@name='color']" position="after">
+                <field name="swiss_law_ids"/>
+            </xpath>
+             <xpath expr="//field[@name='swiss_law_ids']" position="after">
+                <field name="total_gap_hours"  widget="float_time"/>
+            </xpath>            
+        </field>
+    </record>
+</odoo>

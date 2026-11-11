@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Allow the website forms to write the newsletter checkbox on leads -->
+    <function model="ir.model.fields" name="formbuilder_whitelist">
+        <value>crm.lead</value>
+        <value eval="['join_exaddon_lead']"/>
+    </function>
+</odoo>

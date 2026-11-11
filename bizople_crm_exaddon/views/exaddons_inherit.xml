@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Odoo 19: snippets are registered in the website builder by group -->
+    <template id="biz_exaddons_snippets" inherit_id="website.snippets">
+        <xpath expr="//snippets[@id='snippet_structure']" position="inside">
+            <t t-snippet="bizople_crm_exaddon.s_exaddons_form" string="Exaddon Form" group="contact_and_forms"
+               t-forbid-sanitize="form" t-thumbnail="/website/static/src/img/snippets_thumbs/s_website_form.svg">
+                <keywords>exaddon, contact, form, newsletter, lead</keywords>
+            </t>
+            <t t-snippet="bizople_crm_exaddon.s_exaddons_form_download" string="Exaddon Download Form" group="contact_and_forms"
+               t-forbid-sanitize="form" t-thumbnail="/website/static/src/img/snippets_thumbs/s_website_form.svg">
+                <keywords>exaddon, download, form, newsletter, lead</keywords>
+            </t>
+        </xpath>
+    </template>
+</odoo>
