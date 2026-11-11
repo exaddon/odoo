@@ -4,7 +4,7 @@
     'category': 'Theme/Services',
     'summary': 'Exaddon',
     'sequence': 1,
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'depends': ['theme_common'],
     'data': [
         'data/generate_primary_template.xml',

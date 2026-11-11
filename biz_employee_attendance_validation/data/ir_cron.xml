@@ -3,7 +3,7 @@
 # Part of Odoo Module Developed by Bizople Solutions Pvt. Ltd.
 # See LICENSE file for full copyright and licensing details. -->
 
-<odoo noupdate="0">
+<odoo noupdate="1">
     <record id="hr_employee_swiss_law" model="ir.cron">
         <field
             name="name"
